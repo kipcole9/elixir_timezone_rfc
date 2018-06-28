@@ -20,6 +20,14 @@ Timezone support is construed to mean the support of timezones within the defini
 
 No changes are proposed to the `DateTime` or `NaiveDateTime` structs to ensure backward compatibility.
 
+## Assumptions
+
+The core assumptions underlying this RFC are:
+
+1. Time is measured in the same way for all calendars as a continuous 24-hour period starting at 0:0:0.0 representing midnight.  This is not the canonical representation for calendars such as the [Hebrew calendar](https://en.wikipedia.org/wiki/Zmanim), or for any calendar whose day does not start at midnight.
+
+2. The current `DateTime.diff/2` and the proposed `DateTime.diff/3` have no leap second awareness and may therefore provide an inaccurate result.
+
 ## Defining the timezone provider module
 
 Since there should be no elixir language dependency on a timezone provider module we need a way to inform the system of which module to be used.  This should be done in such a way that:
@@ -47,7 +55,10 @@ defmodule MyApp.Mixfile do
       app: :my_app,
       version: "1.0",
       elixir: "~> 1.9",
-      timezone_provider: Timex.TimezoneProvider
+      timezone_provider: Timex.TimezoneProvider,
+      ...
+    ]
+  end
 ```
 
 ## Additional types
