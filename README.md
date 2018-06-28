@@ -24,7 +24,7 @@ No changes are proposed to the `DateTime` or `NaiveDateTime` structs to ensure b
 
 The core assumptions underlying this RFC are:
 
-1. Time is measured in the same way for all calendars as a continuous 24-hour period starting at 0:0:0.0 representing midnight.  This is not the canonical representation for calendars such as the [Hebrew calendar](https://en.wikipedia.org/wiki/Zmanim), or for any calendar whose day does not start at midnight.
+1. Time is measured in the same way for all calendars as a continuous 24-hour period starting at 0:0:0.0 representing midnight.  This is not the canonical representation for calendars such as the [Hebrew calendar](https://en.wikipedia.org/wiki/Zmanim), or the [Hindu calendar](https://en.wikipedia.org/wiki/Hindu_units_of_time) or for any calendar whose day does not start at midnight.
 
 2. The current `DateTime.diff/2` and the proposed `DateTime.diff/3` have no leap second awareness and may therefore provide an inaccurate result.
 
