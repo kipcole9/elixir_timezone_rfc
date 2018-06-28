@@ -103,7 +103,9 @@ For this proposal it accepts any timezone that is supported by the timezone prov
 
 ## Notes
 
-* Implementation proposed using a macro.  This allows the timezone module to be resolved at compile time. If this was defined as a function then there would be two function calls: one to the proxy in `DateTime` then one to the underlying `timezone_provider()`
+* Implementation proposed using a macro.  This allows the timezone module to be resolved at compile
+ time. If this was defined as a function then there would be two function calls: one to the proxy
+ in `DateTime` then one to the underlying `timezone_provider()`
 
 ## Examples
 
