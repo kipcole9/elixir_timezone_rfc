@@ -2,6 +2,10 @@
 
 This document requests comments on a proposal to define timezone support for the [Elixir](https://elixir-lang.org) programming language as [requested](https://elixirforum.com/t/call-for-proposals-time-zone-support-in-elixir/14743) by [Michael Muskala](https://michal.muskala.eu) on June 19th, 2018
 
+## Status
+
+This is an incomplete work in progress design to faciliate conversation and contribution.
+
 ## Principles
 
 As stated in the original forum message:
@@ -18,7 +22,7 @@ Timezone support is construed to mean the support of timezones within the defini
 * `std_offset` which is the standard offset for this zone from UTC
 * `utc_offset` which is the current offset for this zone from UTC.  It may be different to `std_offset` in the case of daylight saving being in affect for the given zone but its definition is not restricted to this case.
 
-No changes are proposed to the `DateTime` or `NaiveDateTime` structs to ensure backward compatibility.
+No changes are proposed to the `DateTime` or `NaiveDateTime` structs to ensure backward compatibility.  This has implications for
 
 ## Assumptions
 
@@ -26,7 +30,7 @@ The core assumptions underlying this RFC are:
 
 1. Time is measured in the same way for all calendars as a continuous 24-hour period starting at 0:0:0.0 representing midnight.  This is not the canonical representation for calendars such as the [Hebrew calendar](https://en.wikipedia.org/wiki/Zmanim), or the [Hindu calendar](https://en.wikipedia.org/wiki/Hindu_units_of_time) or for any calendar whose day does not start at midnight.
 
-2. The current `DateTime.diff/2` and the proposed `DateTime.diff/3` have no leap second awareness and may therefore provide an inaccurate result.
+2. The current `DateTime.diff/2` and the proposed `DateTime.diff/3` have no [leap second](https://en.wikipedia.org/wiki/Leap_second) awareness and may therefore provide an inaccurate result.  As of June 2018, the error in difference between a date in January 1972 (when leap seconds were introduced) and a date in June 2018 is no more than 27 seconds.
 
 ## Defining the timezone provider module
 
@@ -80,7 +84,7 @@ conforms to the `Time.Timezone` behaviour must be supplied.
 @type Calendar.timezone_provider :: module()
 ```
 
-## `DateTime.Timezone` behaviour
+## `DateTime.Timezone` behaviour and default Provider
 
 A timezone provider must conform the `@behaviour` `DateTime.Timezone`  The module `DateTime.Timezone` is also the default timezone provider which, for compatibility reasons, only knows the `Etc/UTC` timezone.
 
