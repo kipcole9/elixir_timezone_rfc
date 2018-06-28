@@ -1,6 +1,6 @@
 # RFC - Timezone support for Elixir
 
-This document requests comments on a proposal to define timezone support for the [Elixir] programming language as [requested](https://elixirforum.com/t/call-for-proposals-time-zone-support-in-elixir/14743) by [Michael Muskala](https://michal.muskala.eu) on June 19th, 2018
+This document requests comments on a proposal to define timezone support for the [Elixir](https://elixir-lang.org) programming language as [requested](https://elixirforum.com/t/call-for-proposals-time-zone-support-in-elixir/14743) by [Michael Muskala](https://michal.muskala.eu) on June 19th, 2018
 
 ## Principles
 
@@ -10,7 +10,6 @@ As stated in the original forum message:
 * a way to provide the time zone database to the Elixir standard library though a package
 
 In addition we accept the general principle that the API presented should be the simplest possible.
-
 
 ## Structs
 
@@ -70,7 +69,11 @@ conforms to the `Time.Timezone` behaviour must be supplied.
 @type Calendar.timezone_provider :: module()
 ```
 
-## New functions
+## `DateTime.Timezone` behaviour
+
+A timezone provider must conform the `@behaviour` `DateTime.Timezone`  The module `DateTime.Timezone` is also the default timezone provider which, for compatibility reasons, only knows the `Etc/UTC` timezone.
+
+## New functions in `DateTime`
 
 Additional functions are proposed to support a minimum viable API.
 
@@ -88,7 +91,7 @@ Converts a `DateTime.t()` from one timezone to another.
   {:ok, DateTime.t()} | {:error, invalid()}
 ```
 
-## Modified functions
+## Modified functions in `DateTime`
 
 Some functions will need modification to support a timezone provider. They are defined to return the same results as the current Elixir 1.6 if no provider is configured or provided as a parameter.
 
@@ -123,7 +126,8 @@ For this proposal it accepts any timezone that is supported by the timezone prov
 defmacro from_naive(naive_datetime, timezone_name,
      timezone_provider \\ DateTime.timezone_provider) do
   quote do
-    unquote(timezone_module).from_naive(naive_datetime, timezone_name)
+    unquote(timezone_provider).from_naive(naive_datetime, timezone_name)
   end
 end
+
 ```
